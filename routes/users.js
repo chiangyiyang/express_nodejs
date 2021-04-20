@@ -27,6 +27,7 @@ router.post('/', function (req, res, next) {
   res.json(users);
 });
 
+
 //更新user
 //ex. curl -X PUT -H 'Content-Type:application/json' -d '{"name":"John Doe", "email":"john@outlook.com"}' http://localhost:3000/users/a1234
 router.put('/:id', function (req, res, next) {
@@ -40,6 +41,7 @@ router.put('/:id', function (req, res, next) {
   res.json(users);
 });
 
+
 //更新user部分資料
 //ex. curl -X PATCH -H 'Content-Type:application/json' -d '{"name":"John Doe"}' http://localhost:3000/users/a1234
 router.patch('/:id', function (req, res, next) {
@@ -49,6 +51,14 @@ router.patch('/:id', function (req, res, next) {
     }
     return user;
   });
+  res.json(users);
+});
+
+
+//刪除user
+//ex. curl -X DELETE http://localhost:3000/users/a1234
+router.delete('/:id', function (req, res, next) {
+  users = users.filter(user => user.id != req.params.id);
   res.json(users);
 });
 
