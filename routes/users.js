@@ -13,4 +13,10 @@ router.get('/', function (req, res, next) {
   res.json(users);
 });
 
+
+//由id取得user的Json
+router.get('/:id', function (req, res, next) {
+  res.json(users.filter(user => user.id == req.params.id));
+});
+
 module.exports = router;
