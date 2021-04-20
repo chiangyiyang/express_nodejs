@@ -19,4 +19,12 @@ router.get('/:id', function (req, res, next) {
   res.json(users.filter(user => user.id == req.params.id));
 });
 
+
+//新增user
+//ex. curl -X POST -H 'Content-Type:application/json' -d '{"id":"a001","name":"Yiyang"}' http://localhost:3000/users
+router.post('/', function (req, res, next) {
+  users.push(req.body);
+  res.json(users);
+});
+
 module.exports = router;
