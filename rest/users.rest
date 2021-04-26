@@ -1,0 +1,57 @@
+@hostname = localhost
+@port = 3000
+@host = {{hostname}}:{{port}}
+
+
+# get all users
+GET http://{{host}}/users HTTP/1.1
+###
+
+
+# get user by id
+GET http://{{host}}/users/a001 HTTP/1.1
+###
+
+
+# add a user
+POST http://{{host}}/users HTTP/1.1
+content-type: application/json
+
+{
+    "id": "a002",
+    "name": "John Doe",
+    "email": "john@gmail.com"
+}
+###
+
+
+# update all data of user by id
+PUT http://{{host}}/users/a001 HTTP/1.1
+content-type: application/json
+
+{
+    "name": "John",
+    "email": "john@outlook.com"
+}
+###
+
+
+# update partial data of user by id
+PATCH http://{{host}}/users/a002 HTTP/1.1
+content-type: application/json
+
+{
+    "email": "john@yahoo.com"
+}
+###
+
+
+# delete user by id
+DELETE  http://{{host}}/users/a001 HTTP/1.1
+###
+
+
+# delete all users
+DELETE  http://{{host}}/users HTTP/1.1
+###
+
