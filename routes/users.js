@@ -30,17 +30,32 @@ const response_to_client = (msg, callback) => {
 
 
 //開啟資料庫並連線
-const open_db = () => new sqlite3.Database('./users.db', log_on_console('開啟資料庫並連線.'));
+const db = new sqlite3.Database('./users.db', log_on_console('開啟資料庫並連線.'));
+
+
+//程式關閉時關閉資料庫連線
+process.on('SIGINT', () => {
+  db.close((err) => {
+    if (err) {
+      console.error('DB_LOG', err.message);
+      process.exit();
+      return;
+    }
+    console.log('DB_LOG', '資料庫已關閉.');
+    process.exit();
+  });
+});
 
 
 //建立資料表
 const create_table = () => {
-  const db = open_db();
   db.serialize(() => {
+    db.run('BEGIN TRANSACTION');
     db.run('CREATE TABLE IF NOT EXISTS users (id text PRIMARY KEY, name text, email text)',
       (err) => {
         if (err) {
           console.error('DB_LOG', err.message);
+          // db.run('ROLLBACK');
           return;
         }
         console.log('DB_LOG', '建立資料表.');
@@ -56,10 +71,8 @@ const create_table = () => {
         [user.id, user.name, user.email],
         log_on_console('新增模擬的user'));
     });
+    db.run('COMMIT');
   });
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
 };
 
 create_table();
@@ -67,8 +80,6 @@ create_table();
 
 //查詢所有資料
 const getAllUsers = (callback) => {
-  const db = open_db();
-
   db.all('SELECT * FROM users',
     (err, rows) => {
       console.log('DB_LOG', '查詢所有資料');
@@ -79,16 +90,11 @@ const getAllUsers = (callback) => {
       }
       callback(rows);
     });
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
 };
 
 
 //查詢user id
 const getUserById = (id, callback) => {
-  const db = open_db();
-
   db.get('SELECT * FROM users WHERE id = ?', [id],
     (err, row) => {
       console.log('DB_LOG', '查詢user id');
@@ -99,60 +105,37 @@ const getUserById = (id, callback) => {
       }
       callback(row);
     });
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
 };
 
 
 //新增user
 const addUser = (user, callback) => {
-  const db = open_db();
-
   db.run('INSERT INTO users(id, name, email) VALUES (?, ?, ?)',
     [user.id, user.name, user.email],
     response_to_client({ result: 'user已新增', data: user }, callback));
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
 };
 
 
 //更新user
 const updateUser = (id, user, callback) => {
-  const db = open_db();
-
   const fields = Object.keys(user).map(key => `${key} = ?`).join(', ');
 
   db.run(`UPDATE users SET ${fields} WHERE id = '${id}'`,
     Object.values(user),
     response_to_client({ result: `user ${id} 已更新`, data: user }, callback));
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
 };
 
 
 //刪除user
 const deleteUser = (id, callback) => {
-  const db = open_db();
-
   db.run(`DELETE FROM users WHERE id = '${id}'`,
-  response_to_client({ result: `user ${id} 已刪除`}, callback));
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
+    response_to_client({ result: `user ${id} 已刪除` }, callback));
 };
 
 //刪除全部user
 const deleteAllUsers = (callback) => {
-  const db = open_db();
-
   db.run(`DELETE FROM users`,
-  response_to_client({ result: `全部user已刪除`}, callback));
-
-  //關閉資料庫
-  db.close(log_on_console('關閉資料庫.'));
+    response_to_client({ result: `全部user已刪除` }, callback));
 };
 
 
