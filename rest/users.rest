@@ -9,7 +9,7 @@ GET http://{{host}}/users HTTP/1.1
 
 
 # get user by id
-GET http://{{host}}/users/a002 HTTP/1.1
+GET http://{{host}}/users/a1234 HTTP/1.1
 ###
 
 
@@ -26,7 +26,7 @@ content-type: application/json
 
 
 # update all data of user by id
-PUT http://{{host}}/users/a002 HTTP/1.1
+PUT http://{{host}}/users/a1234 HTTP/1.1
 content-type: application/json
 
 {
@@ -37,7 +37,7 @@ content-type: application/json
 
 
 # update partial data of user by id
-PATCH http://{{host}}/users/a002 HTTP/1.1
+PATCH http://{{host}}/users/a1234 HTTP/1.1
 content-type: application/json
 
 {
@@ -47,7 +47,7 @@ content-type: application/json
 
 
 # delete user by id
-DELETE  http://{{host}}/users/a001 HTTP/1.1
+DELETE  http://{{host}}/users/a1234 HTTP/1.1
 ###
 
 
