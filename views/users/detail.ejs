@@ -10,12 +10,25 @@
 
 <body>
   <h1>Detail of User</h1>
-  <h2>
-    User ID:  <%= user.id %>    <br>
-    User Name:  <%= user.name %>    <br>
-    User Email:  <%= user.email %>    <br>
-  </h2>
+    <div id="info"></div>
 
+
+  <script>
+    const pathname = window.location.pathname;
+    const id = pathname
+                .replace('/users/','')
+                .replace('/detail','');
+    fetch(`http://localhost:3000/users/${id}`)
+    .then(response => response.json())
+    .then(user => {
+      document.getElementById('info').innerHTML=
+      `<h2>
+        User ID:  ${ user.id } <br>
+        User Name:  ${ user.name } <br>
+        User Email:  ${ user.email } <br>
+      </h2>`
+    });
+  </script>
 </body>
 
 </html>
