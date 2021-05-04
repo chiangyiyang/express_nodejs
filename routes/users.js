@@ -9,9 +9,21 @@ router.get('/', function (req, res, next) {
 });
 
 
+//全部users的清單
+router.get('/list/', function (req, res, next) {
+  users.getAllUsers(data => res.render('users/list', { users: data }));
+});
+
+
 //由id取得user的Json
 router.get('/:id', function (req, res, next) {
   users.getUserById(req.params.id, user => res.json(user));
+});
+
+
+//由id取得user的詳細資料
+router.get('/:id/detail', function (req, res, next) {
+  users.getUserById(req.params.id, user => res.render('users/detail', { user: user }));
 });
 
 
@@ -48,5 +60,7 @@ router.delete('/:id', function (req, res, next) {
 router.delete('/', function (req, res, next) {
   users.deleteAllUsers(info => res.json(info));
 });
+
+
 
 module.exports = router;
