@@ -11,7 +11,9 @@
 <body>
   <h1>Detail of User</h1>
     <div id="info"></div>
+  <button onclick="add_user()">Add User</button><br>
   <button onclick="del_user()">Delete User</button><br>
+  <button onclick="update_user()">Update User</button><br>
     <a href="../list">Return to List of Users</a>
 
 
@@ -25,11 +27,51 @@
     .then(user => {
       document.getElementById('info').innerHTML=
       `<h2>
-        User ID:  ${ user.id } <br>
-        User Name:  ${ user.name } <br>
-        User Email:  ${ user.email } <br>
+        User ID: <input id='id' type="text" value="${user.id}"><br>
+        User Name:  <input id='name' type="text" value="${user.name}"><br>
+        User Email:  <input id='email' type="text" value="${user.email}"><br>
       </h2>`
     });
+
+
+    function update_user() {
+      let user_data = {};
+      user_data.name = document.getElementById('name').value;
+      user_data.email = document.getElementById('email').value;
+      fetch(`../${id}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user_data)
+        })
+        .then(res => {
+          window.location.replace("../list");
+        });
+    }
+
+
+    function add_user() {
+      let user_data = {};
+      user_data.id = document.getElementById('id').value;
+      user_data.name = document.getElementById('name').value;
+      user_data.email = document.getElementById('email').value;
+      console.log(user_data);
+      fetch('../',
+        {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(user_data)
+        })
+        .then(res => {
+          window.location.replace("../list");
+        });
+    }
 
 
     function del_user() {
