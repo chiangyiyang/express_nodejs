@@ -10,17 +10,26 @@
 
 <body>
   <h1>All Users</h1>
-  <h2>
-    <ul>
-      <% users.forEach(function(user){ %>
-        <li>
-          <%= user.id %>
-          <%= user.name %>
-          <%= user.email %>
-        </li>
-      <% }); %>
-    </ul>
-  </h2>
+  <div id="info">
+
+  </div>
+  <script>
+    fetch(`http://localhost:3000/users`)
+      .then(response => response.json())
+      .then(users => {
+        list = '<h2>';
+        users.forEach(user => {
+          list += `
+        User ID:  ${user.id} 
+        User Name:  ${user.name} 
+        User Email:  ${user.email} 
+        <br>
+      `
+        });
+        document.getElementById('info').innerHTML = list +'</h2>'
+      });
+  </script>
+
 </body>
 
 </html>
