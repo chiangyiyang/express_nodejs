@@ -20,13 +20,14 @@
         list = '<h2>';
         users.forEach(user => {
           list += `
-        User ID:  ${user.id} 
-        User Name:  ${user.name} 
-        User Email:  ${user.email} 
-        <br>
+                    <a href='${user.id}/detail'>
+                      User ID:  ${user.id} 
+                      User Name:  ${user.name} 
+                      User Email:  ${user.email} 
+                    </a><br>
       `
         });
-        document.getElementById('info').innerHTML = list +'</h2>'
+        document.getElementById('info').innerHTML = list + '</h2>'
       });
   </script>
 
